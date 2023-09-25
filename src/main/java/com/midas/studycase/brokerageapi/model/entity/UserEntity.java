@@ -14,9 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserEntity extends AuditModel {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
 
 

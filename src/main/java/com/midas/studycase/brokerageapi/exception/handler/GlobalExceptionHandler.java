@@ -1,6 +1,8 @@
 package com.midas.studycase.brokerageapi.exception.handler;
 
 
+import com.midas.studycase.brokerageapi.exception.OrderNotFoundException;
+import com.midas.studycase.brokerageapi.exception.OrderProcessingException;
 import com.midas.studycase.brokerageapi.exception.UserAlreadyExistsException;
 import com.midas.studycase.brokerageapi.exception.UserNotFoundException;
 import com.midas.studycase.brokerageapi.model.error.ApiError;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +30,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderProcessingException.class)
+    public Mono<ResponseEntity<ApiError>> handleOrderProcessingException(OrderProcessingException e) {
+        ApiError apiError = new ApiError("Order processing failed", List.of(e.getMessage()));
+        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError));
     }
 
     @ExceptionHandler(Exception.class)

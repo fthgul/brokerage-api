@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    @PostMapping
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+    }
 
     @GetMapping
     public ResponseEntity<GetUserResponseList> listAllUsers() {
@@ -28,10 +32,6 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<GetUserDetailResponse> getUserDetails(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getUserById(userId));
-    }
-    @PostMapping
-    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 }
 

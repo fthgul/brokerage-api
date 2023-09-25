@@ -33,6 +33,6 @@ public abstract class AuditModel {
     private String updatedBy;
 
     @Version
-    private Integer version;
+    private int version;
 }
 

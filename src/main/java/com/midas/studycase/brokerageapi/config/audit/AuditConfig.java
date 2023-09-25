@@ -1,4 +1,4 @@
-package com.midas.studycase.brokerageapi.configuration.audit;
+package com.midas.studycase.brokerageapi.config.audit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

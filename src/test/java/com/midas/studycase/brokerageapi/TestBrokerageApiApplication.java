@@ -6,13 +6,24 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestBrokerageApiApplication {
 
     @Bean
-    @ServiceConnection
+    @ServiceConnection(name = "postgres")
+    PostgreSQLContainer<?> postgreSQLContainer() {
+        return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"))
+                .withDatabaseName("postgres")
+                .withUsername("user")
+                .withPassword("password");
+    }
+
+
+    @Bean
+    @ServiceConnection(name = "kafka")
     KafkaContainer kafkaContainer() {
         return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
     }
